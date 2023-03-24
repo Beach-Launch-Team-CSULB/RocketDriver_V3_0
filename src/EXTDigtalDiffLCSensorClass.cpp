@@ -5,7 +5,7 @@
 
 // Initializer 1
 DIG_LC_SENSOR::DIG_LC_SENSOR(uint32_t setSensorID, uint32_t setSensorNodeID, uint8_t setADCinput1, uint8_t setADCinput2, FluidSystemSimulation* setFluidSim, uint32_t setSampleRateSlowMode_Default, uint32_t setSampleRateMedMode_Default, uint32_t setSampleRateFastMode_Default, uint32_t setConversionSendRate_Default, float setLinConvCoef1_m_Default = 1, float setLinConvCoef1_b_Default = 0, float setLinConvCoef2_m_Default = 1, float setLinConvCoef2_b_Default = 0, float setMaxIntegralSum_Default = 2500, float setMinIntegralSum_Default = -2500, uint32_t setCurrentSampleRate = 0, SensorState setSensorState = Off)
-                : sensorID{setSensorID}, sensorNodeID{setSensorNodeID}, ADCinput1{setADCinput1}, ADCinput2{setADCinput2}, fluidSim{*setFluidSim}, sampleRateSlowMode_Default{setSampleRateSlowMode_Default}, sampleRateMedMode_Default{setSampleRateMedMode_Default}, sampleRateFastMode_Default{setSampleRateFastMode_Default}, conversionSendRate_Default{setConversionSendRate_Default}, linConvCoef1_m_Default{setLinConvCoef1_m_Default}, linConvCoef1_b_Default{setLinConvCoef1_b_Default}, linConvCoef2_m_Default{setLinConvCoef2_m_Default}, linConvCoef2_b_Default{setLinConvCoef2_b_Default}, maxIntegralSum_Default{setMaxIntegralSum_Default}, minIntegralSum_Default{setMinIntegralSum_Default}, currentSampleRate{setCurrentSampleRate}, sensorState{setSensorState}
+                : Sensor{setSensorID, setSensorNodeID, setADCinput1}, ADCinput2{setADCinput2}, fluidSim{*setFluidSim}, sampleRateSlowMode_Default{setSampleRateSlowMode_Default}, sampleRateMedMode_Default{setSampleRateMedMode_Default}, sampleRateFastMode_Default{setSampleRateFastMode_Default}, conversionSendRate_Default{setConversionSendRate_Default}
 {
   // setting stuff to defaults at initialization
   sampleRateSlowMode = sampleRateSlowMode_Default;
@@ -13,17 +13,19 @@ DIG_LC_SENSOR::DIG_LC_SENSOR(uint32_t setSensorID, uint32_t setSensorNodeID, uin
   sampleRateFastMode = sampleRateFastMode_Default;
   sampleRateCalibrationMode = sampleRateCalibrationMode_Default;
   conversionSendRate = conversionSendRate_Default;
+  _currentSampleRate = setCurrentSampleRate;
 
-  linConvCoef1_m = linConvCoef1_m_Default;
-  linConvCoef1_b = linConvCoef1_b_Default;
-  linConvCoef2_m = linConvCoef2_m_Default;
-  linConvCoef2_b = linConvCoef2_b_Default;
+  linConvCoef1_m = linConvCoef1_m_Default = setLinConvCoef1_m_Default;
+  linConvCoef1_b = linConvCoef1_b_Default = setLinConvCoef1_b_Default;
+  linConvCoef2_m = linConvCoef2_m_Default = setLinConvCoef2_m_Default;
+  linConvCoef2_b = linConvCoef2_b_Default = setLinConvCoef2_b_Default;
 
   EMA = EMA_Default;
   alphaEMA = alphaEMA_Default;
   regressionSamples = regressionSamples_Default;
-  maxIntegralSum = maxIntegralSum_Default;
-  minIntegralSum = minIntegralSum_Default;
+  maxIntegralSum = maxIntegralSum_Default = setMaxIntegralSum_Default;
+  minIntegralSum = minIntegralSum_Default = setMinIntegralSum_Default;
+  sensorState = setSensorState;
 }
 
 
@@ -37,10 +39,10 @@ void DIG_LC_SENSOR::begin()
         convertedValueArray[1] = {3};
         convertedValueArray[2] = {static_cast<float>(regressionSamples)};
     }
-    if (nodeIDCheck && sensorSource == TeensyMCUADC)
+    if (nodeIDCheck && getADCtype() == TeensyMCUADC)
     {
-        pinMode(ADCinput1, INPUT);
-        pinMode(ADCinput2, INPUT);
+        pinMode(getADCinput() , INPUT);
+        pinMode(getADCinput2(), INPUT);
     }
 }
 
@@ -70,26 +72,26 @@ void DIG_LC_SENSOR::resetAll()
 
 }
 
-void DIG_LC_SENSOR::setState(SensorState newState) 
-{
-    sensorState = newState;
-}
+//void DIG_LC_SENSOR::setState(SensorState newState) 
+//{
+//    sensorState = newState;
+//}
 
 void DIG_LC_SENSOR::read(ADC& adc)
 {
     //Add in sample rate code here to check if a sensor is up to be read
     //This is also where alternate ADC sources would be used - I do have the RTD sensors over ITC right now
     //I'll have to change how it's written though, right now it's ADC* adc which is specific to Teensy MCU ADC
-if (sensorSource == TeensyMCUADC)
+if (getADCtype() == TeensyMCUADC)
     {
-        if (currentSampleRate != 0)     //math says no divide by zero, use separate conditional for sample rate of 0
+        if (getCurrentSampleRate() != 0)     //math says no divide by zero, use separate conditional for sample rate of 0
         {
-        if (timer >= (1000000/currentSampleRate))   // Divides 1 second in microseconds by current sample rate in Hz
+        if (timer >= (1000000/getCurrentSampleRate()))   // Divides 1 second in microseconds by current sample rate in Hz
             {
                 
-                    currentRawValue1 = adc.analogRead(ADCinput1);
-                    currentRawValue2 = adc.analogRead(ADCinput2);
-                    currentRawDiffValue = currentRawValue1 - currentRawValue2;
+                    currentRawValue = adc.analogRead(getADCinput());
+                    currentRawValue2 = adc.analogRead(getADCinput2());
+                    currentRawDiffValue = currentRawValue - currentRawValue2;
                 Serial.print(", currentDiffRawValue: ");
                 Serial.println(currentRawDiffValue);
                     pullTimestamp = true;
@@ -103,17 +105,17 @@ if (sensorSource == TeensyMCUADC)
                     accumulatedI_float();
                     //currentLinReg_a1 = linearRegressionLeastSquared_PID();
 
-                //if (sensorID == 58)
+                //if (getSensorID() == 58)
                 //{
     /*             Serial.print("sensorID: ");
-                Serial.print(sensorID);
+                Serial.print(getSensorID());
                 Serial.print(", currentRawValue: ");
                 Serial.println(currentRawValue);
                 Serial.print(", currentConvertedValue: ");
                 Serial.println(currentConvertedValue); */
                 //}
     /*             Serial.print("sensorID: ");
-                Serial.print(sensorID);
+                Serial.print(getSensorID());
                 Serial.print(", currentRawValue: ");
                 Serial.println(currentRawValue);
                 Serial.print(", currentRollingAverage: ");
@@ -136,29 +138,21 @@ if (sensorSource == TeensyMCUADC)
 
 void DIG_LC_SENSOR::stateOperations()
 {
-
-    switch (sensorState)
+    uint32_t sampleRate = 0;
+    switch(sensorState)
     {
-    case SensorState::Off:
-        setCurrentSampleRate(0);
-        timeStep = 1; //timeStep in seconds - shitty hack to make it not brick to a nan from dividing by zero
-        break;
-    case SensorState::Slow:
-        setCurrentSampleRate(sampleRateSlowMode);
-        timeStep = 1/sampleRateSlowMode;
-        break;
-    case SensorState::Medium:
-        setCurrentSampleRate(sampleRateMedMode);
-        timeStep = 1/sampleRateMedMode; //timeStep in seconds
-        break;
-    case SensorState::Fast:
-        setCurrentSampleRate(sampleRateFastMode);
-        timeStep = 1/sampleRateFastMode; //timeStep in seconds
-        break;
-    // All other states require no action
-    default:
-        break;
+    case SensorState::Slow:   sampleRate = sampleRateSlowMode; break;
+    case SensorState::Medium: sampleRate = sampleRateMedMode;  break;
+    case SensorState::Fast:   sampleRate = sampleRateFastMode; break;
+    case SensorState::Off:    sampleRate = 0; break;
+    default: return;
     }
+
+    setCurrentSampleRate(sampleRate);
+    if(sensorState == SensorState::Off)
+        timeStep = 1; //timeStep in seconds - shitty hack to make it not brick to a nan from dividing by zero
+    else
+        timeStep = 1/sampleRate;
 }
 
 void DIG_LC_SENSOR::linearConversion()
@@ -365,7 +359,7 @@ float timeStepAccumI = 0;
         timeStepAccumI = timer/float(1000000);
         //timeStepAccumI = 0.01;
 /*         Serial.print(" ID: ");
-        Serial.print(sensorID);
+        Serial.print(getSensorID());
         Serial.print(" timer: ");
         Serial.println(timer,10);
         Serial.print(" timeStepAccumI: ");

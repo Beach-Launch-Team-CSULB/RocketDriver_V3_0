@@ -1,5 +1,5 @@
-#ifndef TEMPERATURESENSORCLASS_H
-#define TEMPERATURESENSORCLASS_H
+#ifndef TEMPERATURESENSORCLASS_H_
+#define TEMPERATURESENSORCLASS_H_
 
 #include <Arduino.h>
 #include <ADC.h>
@@ -8,7 +8,7 @@
 #include "ALARAUtilityFunctions.h"
 
 //#include "thermocoupleT_K.h"
-#pragma once
+//#pragma once // This pragma once shouldn't be required.
 
 enum TCType
 {
@@ -127,8 +127,8 @@ class THERMOCOUPLE
         // reset all configurable settings to defaults
         void resetAll();
 
-        void exponentialMovingAverage();
-        float linearRegressionLeastSquared_PID();
+    void exponentialMovingAverage();
+    float linearRegressionLeastSquared_PID();
         // Constructor
         THERMOCOUPLE(uint32_t setSensorID, uint32_t setSensorNodeID, uint8_t setADCinput1, uint8_t setADCinput2, TCType setTc, RTD_BREAKOUT* setTempsensor, uint16_t setRefVoltage = 1200);
 };

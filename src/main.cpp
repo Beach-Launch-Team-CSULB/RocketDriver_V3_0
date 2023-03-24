@@ -255,12 +255,9 @@ void setup() {
 ////////////////////////////////////////////////////////////////////////////////
 
     // -----Run Valve PropulsionSysNodeID Check-----
+    // ID Check verifies that the right devices are attached to the right ALARA.
     ValveNodeIDCheck(valveArray, PropulsionSysNodeID);
-
-    // -----Run Valve PropulsionSysNodeID Check-----
     PyroNodeIDCheck(pyroArray, PropulsionSysNodeID);
-
-    // -----Run Sensor PropulsionSysNodeID Check-----
     SensorNodeIDCheck(sensorArray, PropulsionSysNodeID);
     SensorNodeIDCheck(HPsensorArray, PropulsionSysNodeID);
     //SensorNodeIDCheck(TCsensorArray, PropulsionSysNodeID);

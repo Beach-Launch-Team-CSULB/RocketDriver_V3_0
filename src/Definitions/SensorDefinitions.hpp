@@ -55,10 +55,10 @@ ALARAVRAIL_SENSOR Pasafire5_0{216, 8, ALARA_ANALOG_5RAIL, 0.0006,1.7800};   // n
 
 // Sensor Array including PasaBang only
 //std::array<MCU_SENSOR*, NUM_SENSORS> sensorArray{&ChamberPT1, &FuelLinePT, &LoxLinePT, &FuelTankPT1, &FuelTankPT2, &LoxTankPT1, &LoxTankPT2, &HiPressPT};
-std::array<SENSORBASE*, NUM_SENSORS> sensorArray{&MVPneumaticsPT, &FuelLinePT, &LoxLinePT, &FuelTankPT1, &FuelTankPT2, &LoxTankPT1, &LoxTankPT2, &HiPressPT, &FakeFuelLinePT, &FakeLoxLinePT, &FakeFuelTankPT, &FakeLoxTankPT, &FakeHiPressPT, &ThrustMountLoadCell1pos, &ThrustMountLoadCell1neg};
+std::array<Sensor*, NUM_SENSORS> sensorArray{&MVPneumaticsPT, &FuelLinePT, &LoxLinePT, &FuelTankPT1, &FuelTankPT2, &LoxTankPT1, &LoxTankPT2, &HiPressPT, &FakeFuelLinePT, &FakeLoxLinePT, &FakeFuelTankPT, &FakeLoxTankPT, &FakeHiPressPT, &ThrustMountLoadCell1pos, &ThrustMountLoadCell1neg};
 
 // ALARA Pasafire HP sensor array
-std::array<SENSORBASE*, NUM_HPSENSORS> HPsensorArray{&PasafireHP1, &PasafireHP2, &PasafireHP3, &PasafireHP4, &PasafireHP5, &PasafireHP6, &PasafireHP7, &PasafireHP8, &PasafireHP9, &PasafireHP10, &Pasafire3_3, &Pasafire5_0};
+std::array<Sensor*, NUM_HPSENSORS> HPsensorArray{&PasafireHP1, &PasafireHP2, &PasafireHP3, &PasafireHP4, &PasafireHP5, &PasafireHP6, &PasafireHP7, &PasafireHP8, &PasafireHP9, &PasafireHP10, &Pasafire3_3, &Pasafire5_0};
 #endif
 
 #ifdef RENEGADESF
@@ -132,7 +132,7 @@ ALARAHP_SENSOR RenegadePropHP10{140, 3, ALARA_HIGHPOWER_ANALOGREAD10, 0.0006,1.7
 std::array<ALARAHP_SENSOR*, 20> HPsensorArray{&RenegadeEngineHP1, &RenegadeEngineHP2, &RenegadeEngineHP3, &RenegadeEngineHP4, &RenegadeEngineHP5, &RenegadeEngineHP6, &RenegadeEngineHP7, &RenegadeEngineHP8, &RenegadeEngineHP9, &RenegadeEngineHP10, &RenegadePropHP1, &RenegadePropHP2, &RenegadePropHP3, &RenegadePropHP4, &RenegadePropHP5, &RenegadePropHP6, &RenegadePropHP7, &RenegadePropHP8, &RenegadePropHP9, &RenegadePropHP10};
 
 // Sensor Array including Renegade SF only
-std::array<SENSORBASE*, NUM_SENSORS> sensorArray{&ThrustMountLoadCell1, &ThrustMountLoadCell2, &ThrustMountLoadCell3, &ChamberPT2, &ChamberPT1, &FuelInletPropSidePT, &FuelInjectorPT, &LoxInletPropSidePT, &MVPneumaticsPT, &DomeRegFuelPT, &DomeRegLoxPT, &FuelTankPT1, &FuelTankPT2, &LoxTankPT1, &LoxTankPT2, &HiPressFuelPT, &HiPressLoxPT, &FakeChamberPT1, &FakeFuelLinePT, &FakeLoxLinePT, &FakeFuelTankPT, &FakeLoxTankPT, &FakeHiPressPT};
+std::array<Sensor*, NUM_SENSORS> sensorArray{&ThrustMountLoadCell1, &ThrustMountLoadCell2, &ThrustMountLoadCell3, &ChamberPT2, &ChamberPT1, &FuelInletPropSidePT, &FuelInjectorPT, &LoxInletPropSidePT, &MVPneumaticsPT, &DomeRegFuelPT, &DomeRegLoxPT, &FuelTankPT1, &FuelTankPT2, &LoxTankPT1, &LoxTankPT2, &HiPressFuelPT, &HiPressLoxPT, &FakeChamberPT1, &FakeFuelLinePT, &FakeLoxLinePT, &FakeFuelTankPT, &FakeLoxTankPT, &FakeHiPressPT};
 
 std::array<THERMOCOUPLE*, 6> TCsensorArray{&EngineChamberWallTC, &EngineThroatWallTC, &EngineNozzleExitWallTC, &LoxTankLowerTC, &LoxTankMidTC, &LoxTankUpperTC};
 

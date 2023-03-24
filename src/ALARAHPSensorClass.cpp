@@ -6,22 +6,24 @@
 
 // Initializer 1
 ALARAHP_SENSOR::ALARAHP_SENSOR(uint32_t setSensorID, uint32_t setSensorNodeID, uint8_t setADCinput, float setLinConvCoef1_m_Default = 1, float setLinConvCoef1_b_Default = 0, float setLinConvCoef2_m_Default = 1, float setLinConvCoef2_b_Default = 0, uint32_t setCurrentSampleRate = 0, SensorState setSensorState = Fast)
-                : sensorID{setSensorID}, sensorNodeID{setSensorNodeID}, ADCinput{setADCinput}, linConvCoef1_m_Default{setLinConvCoef1_m_Default}, linConvCoef1_b_Default{setLinConvCoef1_b_Default}, linConvCoef2_m_Default{setLinConvCoef2_m_Default}, linConvCoef2_b_Default{setLinConvCoef2_b_Default}, currentSampleRate{setCurrentSampleRate}, sensorState{setSensorState}
+    : Sensor{setSensorID, setSensorNodeID, setADCinput}
 {
   // setting stuff to defaults at initialization
   sampleRateSlowMode = sampleRateSlowMode_Default;
   sampleRateMedMode = sampleRateMedMode_Default;
   sampleRateFastMode = sampleRateFastMode_Default;
   sampleRateCalibrationMode = sampleRateCalibrationMode_Default;
-
-  linConvCoef1_m = linConvCoef1_m_Default;
-  linConvCoef1_b = linConvCoef1_b_Default;
-  linConvCoef2_m = linConvCoef2_m_Default;
-  linConvCoef2_b = linConvCoef2_b_Default;
+  _currentSampleRate = setCurrentSampleRate;
+  
+  linConvCoef1_m = linConvCoef1_m_Default = setLinConvCoef1_m_Default;
+  linConvCoef1_b = linConvCoef1_b_Default = setLinConvCoef1_b_Default;
+  linConvCoef2_m = linConvCoef2_m_Default = setLinConvCoef2_m_Default;
+  linConvCoef2_b = linConvCoef2_b_Default = setLinConvCoef2_b_Default;
 
   EMA = EMA_Default;
   alphaEMA = alphaEMA_Default;
   regressionSamples = regressionSamples_Default;
+  sensorState = setSensorState;
 }
 
 
@@ -29,7 +31,7 @@ void ALARAHP_SENSOR::begin()
 {
     if (nodeIDCheck)
     {
-        pinMode(ADCinput, INPUT);
+        pinMode(getADCinput(), INPUT);
     }
 }
 
@@ -55,21 +57,21 @@ void ALARAHP_SENSOR::resetAll()
   alphaEMA = alphaEMA_Default;
 }
 
-void ALARAHP_SENSOR::setState(SensorState newState) 
-{
-    sensorState = newState;
-}
+//void ALARAHP_SENSOR::setState(SensorState newState) 
+//{
+//    sensorState = newState;
+//}
 
 void ALARAHP_SENSOR::read(ADC& adc)
 {
     //Add in sample rate code here to check if a sensor is up to be read
     //This is also where alternate ADC sources would be used - I do have the RTD sensors over ITC right now
     //I'll have to change how it's written though, right now it's ADC* adc which is specific to Teensy MCU ADC
-        if (currentSampleRate != 0)     //math says no divide by zero, use separate conditional for sample rate of 0
+        if (getCurrentSampleRate() != 0)     //math says no divide by zero, use separate conditional for sample rate of 0
         {
-        if (timer >= (1000000/currentSampleRate))   // Divides 1 second in microseconds by current sample rate in Hz
+        if (timer >= (1000000/getCurrentSampleRate()))   // Divides 1 second in microseconds by current sample rate in Hz
             {
-                    currentRawValue = adc.analogRead(ADCinput);
+                    currentRawValue = adc.analogRead(getADCinput());
                     pullTimestamp = true;
                     //setRollingSensorArrayRaw(currentRollingArrayPosition, currentRawValue);
                     /////linear conversions here, y = m*x + b
@@ -102,7 +104,7 @@ void ALARAHP_SENSOR::setDeenergizeOffset(ADC& adc, bool outputOverrideIn)
   {
     if (OffsetFunctimer >= (2000))   // 500 Hz fixed, using separate timer to be independant from regular read function
       {
-        currentRawValue = adc.analogRead(ADCinput);
+        currentRawValue = adc.analogRead(getADCinput());
         /////linear conversions here, y = m*x + b
         priorConvertedValue = currentConvertedValue;
         currentConvertedValue = linConvCoef1_m*currentRawValue + linConvCoef1_b;
@@ -153,7 +155,7 @@ void ALARAHP_SENSOR::linearConversion()
     newConversionCheck = true;
 
 /*             Serial.print("sensorID: ");
-            Serial.print(sensorID);
+            Serial.print(getSensorID());
             Serial.print(", currentRawValue: ");
             Serial.println(currentRawValue);
             Serial.print(", currentConvertedValue: ");
@@ -352,7 +354,7 @@ float timeStepAccumI = 0;
         timeStepAccumI = timer/float(1000000);
         //timeStepAccumI = 0.01;
 /*         Serial.print(" ID: ");
-        Serial.print(sensorID);
+        Serial.print(getSensorID());
         Serial.print(" timer: ");
         Serial.println(timer,10);
         Serial.print(" timeStepAccumI: ");

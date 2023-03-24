@@ -62,7 +62,7 @@ public:
 
     // Sets the state machine to newState.  pushes the current state to priorState.
     // If fireTimeIn is present, performs a set. Maybe I should not have this here? It is not atomic, and setFireTime exists.
-    void setState(StateType newState, int64_t fireTimeIn) 
+    virtual void setState(StateType newState, int64_t fireTimeIn) 
     {
         if (newState != _state)
         {
