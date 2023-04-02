@@ -9,7 +9,7 @@
 
 // in main file as global declare: Command CurrentCommand{command_NOCOMMAND} to hold the current command
 
-enum Command
+enum Command // seems to be the third byte of the node state frame. Is there a reason to catch this?
 {
     // we reserve 0 to be a no command state
     command_NOCOMMAND = 0,

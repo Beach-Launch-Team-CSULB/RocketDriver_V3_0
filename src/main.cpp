@@ -53,7 +53,6 @@ using std::string;
 #include <DS1307RTC.h>
 
 //#define PROPULSIONSYSNODEIDPRESET 2;     //NOT in use normally, for testing with the address IO register inactive
-
 ///// ADC /////
 ADC* adc = new ADC();
 

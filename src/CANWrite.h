@@ -30,6 +30,12 @@ void CANwrite(FlexCAN& CANbus, const std::array<uint8_t, size>& messageArray, co
             ++index;
         }
 
+        if ((msgOut.id == 514 || msgOut.id == 515 || msgOut.id == 520) && (msgOut.buf[0] == 6))
+        {
+            Serial.println("sending off nominal status to the GUI"); // or log to an SD card
+            Serial.println(msgOut.id); // or log to an SD card
+        }
+
         // write message to bus
 
         CANbus.write(msgOut);

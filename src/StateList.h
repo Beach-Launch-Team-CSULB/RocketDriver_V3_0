@@ -3,7 +3,7 @@
 
 // This header defines all the tracked states the system an be in, using an enum class for protection
 
-enum class VehicleState
+enum class VehicleState // seems like there is no command for entering setup, passive, and standby
 {
     // These are the God States, they can be reached from any position
     setup,      // 0
@@ -26,7 +26,7 @@ enum class VehicleState
 };
 
 // very preliminary, update as needed while developing Mission State machine
-enum class MissionState
+enum class MissionState // is the logic for lauching completed?????????????????????
 {
     // These are the God States, they can be reached from any position
     passive,                // 0

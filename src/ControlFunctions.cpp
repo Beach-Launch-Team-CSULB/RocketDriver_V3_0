@@ -797,14 +797,16 @@ void commandExecute(VehicleState& currentState, VehicleState& priorState, Missio
                 currentState = VehicleState::test;
                 }
                 break;
-            case command_EnterOffNominal:
+            case command_EnterOffNominal: // is it possible that the same command can be sent twice??
                 priorState = currentState; //for remembering the state the system was in when entering Off Nominal
                 currentState = VehicleState::offNominal;
+                Serial.print("entering Off Nominal"); // or log to an sd card
                 break;            
             case command_ExitOffNominal:
                 if(currentState == VehicleState::offNominal)
                 {
                 currentState = priorState; //returns to prior state when exiting offNominal
+                Serial.print("exiting Off Nominal"); // or log to an sd card
                 }
                 break;
             case command_abort:
