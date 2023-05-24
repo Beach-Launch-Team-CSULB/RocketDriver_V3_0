@@ -13,7 +13,7 @@
     // This function takes the array of pointers that point to the valve objects, and then calls the .stateOperations() method for each valve
     // Make sure valveArray is an array of pointers, as defined in ValveDefinitions.h
 template <typename T, std::size_t size>
-void valveTasks(const std::array<T, size>& valveArray, uint8_t& nodeIDReadIn, bool& outputOverride, AutoSequence& mainAutoSequence)
+void valveTasks(const std::array<T, size>& valveArray, uint8_t nodeIDReadIn, bool& outputOverride, AutoSequence& mainAutoSequence)
 {
     if (!outputOverride)    //bool will block all stateOps
     {
@@ -31,7 +31,7 @@ void valveTasks(const std::array<T, size>& valveArray, uint8_t& nodeIDReadIn, bo
 }
 
 template <typename T, std::size_t size>
-void pyroTasks(const std::array<T, size>& pyroArray, uint8_t& nodeIDReadIn, bool& outputOverride, AutoSequence& mainAutoSequence)
+void pyroTasks(const std::array<T, size>& pyroArray, uint8_t nodeIDReadIn, bool& outputOverride, AutoSequence& mainAutoSequence)
 {
     if (!outputOverride)    //bool will block all stateOps
     {
@@ -49,7 +49,7 @@ void pyroTasks(const std::array<T, size>& pyroArray, uint8_t& nodeIDReadIn, bool
 }
 
 template <typename T, std::size_t size>
-void tankPressControllerTasks(const std::array<T, size>& tankPressControllerArray, uint8_t& nodeIDReadIn, AutoSequence& ignitionAutoSequenceRef)
+void tankPressControllerTasks(const std::array<T, size>& tankPressControllerArray, uint8_t nodeIDReadIn, AutoSequence& ignitionAutoSequenceRef)
 {
     // iterate through valve array and run the stateOperations method
     for(auto tankPressController : tankPressControllerArray)
@@ -64,7 +64,7 @@ void tankPressControllerTasks(const std::array<T, size>& tankPressControllerArra
 }
 
 template <typename T, std::size_t size>
-void engineControllerTasks(const std::array<T, size>& engineControllerArray, uint8_t& nodeIDReadIn, AutoSequence& ignitionAutoSequenceRef)
+void engineControllerTasks(const std::array<T, size>& engineControllerArray, uint8_t nodeIDReadIn, AutoSequence& ignitionAutoSequenceRef)
 {
     // iterate through valve array and run the stateOperations method
     for(auto engineController : engineControllerArray)
@@ -79,7 +79,7 @@ void engineControllerTasks(const std::array<T, size>& engineControllerArray, uin
 }
 
 template <typename T, std::size_t size>
-void autoSequenceTasks(const std::array<T, size>& autoSequenceArray, uint8_t& nodeIDReadIn)
+void autoSequenceTasks(const std::array<T, size>& autoSequenceArray, uint8_t nodeIDReadIn)
 {
     // iterate through valve array and run the stateOperations method
     for(auto autoSequence : autoSequenceArray)
@@ -94,7 +94,7 @@ void autoSequenceTasks(const std::array<T, size>& autoSequenceArray, uint8_t& no
 
 template <typename T, std::size_t size>
 //void sensorTasks(const std::array<T, size>& sensorArray, ADC*adc, uint32_t& secondsRD,uint32_t& microsecondsRD, uint8_t& nodeIDReadIn)
-void sensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_t& nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros)
+void sensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_t nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros)
 {
     // iterate through valve array and run the stateOperations method
     for(auto sensor : sensorArray)
@@ -118,7 +118,7 @@ void sensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_t& node
 
 template <typename T, std::size_t size>
 //void sensorTasks(const std::array<T, size>& sensorArray, ADC*adc, uint32_t& secondsRD,uint32_t& microsecondsRD, uint8_t& nodeIDReadIn)
-void ALARAHPsensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_t& nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros, bool outputOverrideIn)
+void ALARAHPsensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_t nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros, bool outputOverrideIn)
 {
     // iterate through valve array and run the stateOperations method
     for(auto sensor : sensorArray)
@@ -143,7 +143,7 @@ void ALARAHPsensorTasks(const std::array<T, size>& sensorArray, ADC& adc, uint8_
 
 template <typename T, std::size_t size>
 //void sensorTasks(const std::array<T, size>& sensorArray, ADC*adc, uint32_t& secondsRD,uint32_t& microsecondsRD, uint8_t& nodeIDReadIn)
-void TCsensorTasks(const std::array<T, size>& TCsensorArray, ADC& adc, uint8_t& nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros)
+void TCsensorTasks(const std::array<T, size>& TCsensorArray, ADC& adc, uint8_t nodeIDReadIn, uint32_t& rocketDriverSeconds, uint32_t&  rocketDriverMicros)
 {
     // iterate through valve array and run the stateOperations method
     for(auto sensor : TCsensorArray)

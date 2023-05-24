@@ -129,7 +129,7 @@ class FlexCan3Controller
         // External state change bool set function
         void setExternalStateChange(bool stateChangeIn){externalStateChange = stateChangeIn;}
         //Controller loop function
-        void controllerTasks(FlexCAN& CANbus, VehicleState& currentState, MissionState& currentMissionState, Command& currentCommand, const std::array<EngineController*, NUM_ENGINECONTROLLERS>& engineControllerArray, const std::array<TankPressController*, NUM_TANKPRESSCONTROLLERS>& tankPressControllerArray, const std::array<Valve*, NUM_VALVES>& valveArray, const std::array<Pyro*, NUM_PYROS>& pyroArray, const std::array<Sensor*, NUM_SENSORS>& sensorArray, const std::array<ALARAHP_SENSOR*, NUM_HPSENSORS>& HPsensorArray, const std::array<AutoSequence*, NUM_AUTOSEQUENCES>& autoSequenceArray, FluidSystemSimulation& fluidSim, const uint8_t& propulsionNodeIDIn);
+        void controllerTasks(FlexCAN& CANbus, VehicleState& currentState, MissionState& currentMissionState, Command& currentCommand, const std::array<EngineController*, NUM_ENGINECONTROLLERS>& engineControllerArray, const std::array<TankPressController*, NUM_TANKPRESSCONTROLLERS>& tankPressControllerArray, const std::array<Valve*, NUM_VALVES>& valveArray, const std::array<Pyro*, NUM_PYROS>& pyroArray, const std::array<Sensor*, NUM_SENSORS>& sensorArray, const std::array<ALARAHP_SENSOR*, NUM_HPSENSORS>& HPsensorArray, const std::array<AutoSequence*, NUM_AUTOSEQUENCES>& autoSequenceArray, FluidSystemSimulation& fluidSim, const uint8_t propulsionNodeIDIn);
 };
 
 #endif

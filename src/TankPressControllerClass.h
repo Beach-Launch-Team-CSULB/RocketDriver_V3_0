@@ -14,8 +14,8 @@ class TankPressController
         bool nodeIDCheck;                           // Whether this object should operate on this node
         bool isSystemBang;
         bool testPass = false;
-TankPressControllerState state;
-TankPressControllerState priorState;
+        TankPressControllerState state;
+        TankPressControllerState priorState;
         int64_t currentAutosequenceTime;
         SensorState sensorState;                    // Use one sensor state inside here to toggle all sensors on controller
         elapsedMicros timer;                        // timer for the valve, used for changing duty cycles, in MICROS

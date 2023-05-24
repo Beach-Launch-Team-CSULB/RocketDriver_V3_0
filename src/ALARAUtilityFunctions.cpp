@@ -11,6 +11,14 @@
 #define READ_RESTART()     (*(volatile uint32_t *)RESTART_ADDR)
 #define WRITE_RESTART(val) ((*(volatile uint32_t *)RESTART_ADDR) = (val))
 
+void resetAllEEPROMAddresses()
+{
+  for (uint16_t i {0}; i < EEPROM.length(); i++) // on teensy 3.5 & 3.6, EEPROM.length() should return 4096
+  {
+      EEPROM.update(i, 255);
+  }
+}
+
 void ALARAHPOverride(uint8_t pinArrayIn[][11], bool& outputOverride)
 {
   // Writes all ALARA High Power Ouput digital and PWM pins off if bool is true
@@ -25,6 +33,17 @@ void ALARAHPOverride(uint8_t pinArrayIn[][11], bool& outputOverride)
 }
 
 void tripleEEPROMwrite(uint8_t byteToWrite, uint32_t byteAddress1, uint32_t byteAddress2, uint32_t byteAddress3)
+{
+  // -----Write State on EEPROM -----
+  cli(); // disables interrupts to protect write command
+  EEPROM.write(byteAddress1, byteToWrite);                                 // Never use .write()
+  EEPROM.write(byteAddress2, byteToWrite);                                 // Never use .write()
+  EEPROM.write(byteAddress3, byteToWrite);                                 // Never use .write()
+  sei(); // reenables interrupts after write is completed
+}
+
+
+void tripleEEPROMupdate(uint8_t byteToWrite, uint32_t byteAddress1, uint32_t byteAddress2, uint32_t byteAddress3)
 {
     // -----Update State on EEPROM -----
   cli(); // disables interrupts to protect write command
@@ -134,9 +153,9 @@ uint8_t NodeIDDetect(uint8_t pinToReadMUXNodeID, uint8_t pinMUX_S0NodeID, uint8_
   if (nodeIDdetermine)
     {
     // writes the nodeIDdetermine bool to false to reset it
-    tripleEEPROMwrite(0, nodeIDDetermineAddress1, nodeIDDetermineAddress2, nodeIDDetermineAddress3);
+    tripleEEPROMupdate(0, nodeIDDetermineAddress1, nodeIDDetermineAddress2, nodeIDDetermineAddress3);
     // write new node address data to EEPROM below
-    tripleEEPROMwrite(NodeIDAddressRead, NodeIDAddress1, NodeIDAddress2, NodeIDAddress3);
+    tripleEEPROMupdate(NodeIDAddressRead, NodeIDAddress1, NodeIDAddress2, NodeIDAddress3);
     }
   else
     // if nodeIDdetermine is not true, then proceed with reading from EEPROM and comparing results
@@ -159,7 +178,7 @@ void TeensyInternalReset (bool& localNodeResetFlagIn, uint8_t addressIn1, uint8_
 {
   if (localNodeResetFlagIn)
   {
-    tripleEEPROMwrite(1, addressIn1, addressIn2, addressIn3);
+    tripleEEPROMupdate(1, addressIn1, addressIn2, addressIn3);
     WRITE_RESTART(0x5FA0004);
   }
   else; //nothing else but it feels right
