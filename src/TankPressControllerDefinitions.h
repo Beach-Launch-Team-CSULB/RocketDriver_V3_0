@@ -5,6 +5,7 @@
 #include <array>
 #include "ALARApinDefines.h"
 #include "Definitions/PyroDefinitions.hpp"
+#include "Definitions/ValveDefinitions.hpp"
 
 #ifdef PASABANG
 #define NUM_TANKPRESSCONTROLLERS 3

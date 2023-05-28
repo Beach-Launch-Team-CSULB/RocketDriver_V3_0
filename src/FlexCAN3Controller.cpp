@@ -31,7 +31,7 @@ void memcpyRev32(uint8_t *buffer, T value32)
 
     u_32 = value32;
     for(int i=0; i<4; ++i)
-        buffer[i] = u_8x4[3-i];
+        buffer[i] = u_8x4[3-i]; /////////// IS THIS BECAUSE OF THE SOCKETCAN?
 }
 
 

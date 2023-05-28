@@ -41,7 +41,7 @@ class ALARAHP_SENSOR : public Sensor
 
     // further fuctions defined in SensorClass.cpp
 
-void resetTimer();                // resets timer to zero
+    void resetTimer();                // resets timer to zero
     // reset all configurable settings to defaults
     void resetAll();
     void linearConversion();          //Runs a linear sensor conversion 

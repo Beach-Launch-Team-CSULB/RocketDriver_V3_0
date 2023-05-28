@@ -75,7 +75,7 @@ struct commandMSG
 {
     union
     {
-    uint8_t commandByte;
+    uint8_t commandByte; // this is used instead when a raw command in the form of uint8_t is passed in instead of Command enum object
     Command commandEnum;
     };
 };

@@ -24,13 +24,14 @@
     };
 }; */
 
-std::unordered_map<uint16_t, ALARASN> ALARASNmap
+std::unordered_map<uint16_t, ALARASN> ALARASNmap // Looks like these need to be reworked
 {
 // map key = ALARA address
     {1, ALARASN {1, 3, ALARAversion::V1, true, false, true, false, true, 0, 0, 0, 0, 0, 0, 0, 0}},
-    {2, ALARASN {2, 3, ALARAversion::V1, true, false, true, false, true, 0, 0, 0, 0, 0, 0, 0, 0}},
+    {2, ALARASN {2, 3, ALARAversion::V1, true, false, true, false, true, 0, 0, 0, 0, 0, 0, 0, 0}},      
     {3, ALARASN {3, 2, ALARAversion::V2_0, false, true, true, true, true, 0, 0, 0, 0, 0, 0, 0, 0}},
-    {4, ALARASN {4, 3, ALARAversion::V2_1, false, true, true, true, true, 128, 512, 0, 0, 0, 0, 0, 0}},
+    {4, ALARASN {4, 3, ALARAversion::V2_1, false, true, true, true, true, 128, 512, 0, 0, 0, 0, 0, 0}}, // ALARA VERSION == rocket driver version???
+    //{5, ALARASN {5, }}
 };
 
 void lookupALARASNmap(ALARASN& thisALARA, uint8_t ALARANodeIDIn)

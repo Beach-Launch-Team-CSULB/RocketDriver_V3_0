@@ -13,10 +13,28 @@
 
 void resetAllEEPROMAddresses()
 {
-  for (uint16_t i {0}; i < EEPROM.length(); i++) // on teensy 3.5 & 3.6, EEPROM.length() should return 4096
+  for (uint16_t i {0}; i < EEPROM.length(); i++) // on teensy 3.5 & 3.6, EEPROM.length() should return 4096. If not just hardcode it
   {
       EEPROM.update(i, 255);
   }
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
+  Serial.print("EEPROM.length() is ");
+  Serial.println(EEPROM.length());
 }
 
 void ALARAHPOverride(uint8_t pinArrayIn[][11], bool& outputOverride)

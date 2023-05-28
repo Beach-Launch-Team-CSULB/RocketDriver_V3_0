@@ -122,7 +122,6 @@ class FlexCan3Controller
         void generateAutoSequenceUpdatemsg(FlexCAN& CANbus, const std::array<AutoSequence*, NUM_AUTOSEQUENCES>& autoSequenceArray, const uint8_t& propulsionNodeIDIn);
         void generateEngineControllermsgs(FlexCAN& CANbus, const std::array<EngineController*, NUM_ENGINECONTROLLERS>& engineControllerArray, const uint8_t& propulsionNodeIDIn);
         void generateFluidSimmsgs(FlexCAN& CANbus, FluidSystemSimulation& fluidSim, const uint8_t& propulsionNodeIDIn);
-
         void writeObjectByteArray(uint8_t byteArray[10], CAN_message_t& msgIn, uint16_t IDA);
         void writeNodeStateReportByteArray(uint8_t byteArray[8], CAN_message_t& msgIn, uint16_t IDA);
         void nodeSystemTimemsg(FlexCAN& CANbus);

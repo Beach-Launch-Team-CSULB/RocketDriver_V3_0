@@ -4,12 +4,13 @@
 #include <Arduino.h>
 
 
-// Add any board revisions this enum list
+// Add any board revisions to this enum list
 enum class ALARAversion
 {
 V1,
 V2_0,
 V2_1,
+V3_0
 };
 
 struct calibrationCoefs
@@ -39,7 +40,7 @@ struct ALARACalibrations
 struct ALARASN
 {
     uint16_t ALARAaddress;
-    uint8_t propulsionSysNodeID;
+    uint8_t propulsionSysNodeID; // might just rename this to ALARANodeID
     ALARAversion boardRev;
     bool BNO055_present;
     bool BMI085_present;
